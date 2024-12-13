@@ -3,8 +3,12 @@
     {
       "name": "linux-clang-x64",
       "includePath": [
-        "${workspaceFolder}/**"
-      ],
+    "${workspaceFolder}/libs/Arcade-Learning-Environment-0.6.1/src",
+    "${workspaceFolder}/src",
+    "/usr/include",
+    "/usr/local/include"
+]
+,
       "defines": [],
       "compilerPath": "/usr/bin/g++",
       "cStandard": "c11",
