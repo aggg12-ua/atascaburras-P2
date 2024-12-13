@@ -37,14 +37,31 @@ int main() {
     int score = 0;
 
     while (!ale.game_over()) {
-        //acción RANDOM
-        Action action = legalActions[rand() % legalActions.size()];
-        score += ale.act(action);
+    //estado desde RAM
+    auto ram = ale.getRAM();
+    int player_x = ram.get(50);  // Ajusta este índice según sea necesario
+    int enemy_x = ram.get(60);  // Ajusta este índice según sea necesario
+    int enemy_y = ram.get(61);  // Ajusta este índice según sea necesario
 
+    //acción aleatoria
+    Action action = legalActions[rand() % legalActions.size()];
+    score += ale.act(action);
+
+  
+    dataFile << ale.getEpisodeFrameNumber() << ","
+             << player_x << ","
+             << enemy_x << ","
+             << enemy_y << ","
+             << action << "\n";
+
+ 
+    cout << "Frame: " << ale.getEpisodeFrameNumber()
+         << " | Puntuación: " << score << endl;
+}
+
+
+    dataFile.close();
     
-        cout << "Puntuación: " << score <<endl;
-    }
-
     ale.reset_game();
 
     cout << "Fin del juego. Puntuación final: " <<score <<endl;
