@@ -4,37 +4,32 @@ CXXFLAGS = -Wall -O2 -std=c++17 -Ilibs/Arcade-Learning-Environment-0.6.1/src
 LDFLAGS = -Llibs/Arcade-Learning-Environment-0.6.1 -lale_interface -lz -lSDL
 SRC_DIR = src
 BUILD_DIR = build
-SRC = $(wildcard $(SRC_DIR)/*.cpp)
-OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-OUT = $(BUILD_DIR)/demon_bot
 
-# Reglas principales
-all: check_lib $(OUT)
+# Archivos fuente
+SRC_MAIN = $(SRC_DIR)/main.cpp $(SRC_DIR)/perceptron.cpp
+SRC_TRAIN = $(SRC_DIR)/train.cpp $(SRC_DIR)/perceptron.cpp
 
-$(OUT): $(OBJ)
-	@echo "Compilando el proyecto..."
-	$(CXX) $(OBJ) -o $(OUT) $(LDFLAGS)
-	@echo "Proyecto compilado exitosamente: $(OUT)"
+# Archivos objeto
+OBJ_MAIN = $(SRC_MAIN:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+OBJ_TRAIN = $(SRC_TRAIN:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+
+# Ejecutables
+MAIN_EXEC = $(BUILD_DIR)/demon_bot
+TRAIN_EXEC = $(BUILD_DIR)/train_model
+
+all: $(MAIN_EXEC) $(TRAIN_EXEC)
+
+$(MAIN_EXEC): $(OBJ_MAIN)
+	@echo "Compilando demon_bot..."
+	$(CXX) $^ -o $@ $(LDFLAGS)
+
+$(TRAIN_EXEC): $(OBJ_TRAIN)
+	@echo "Compilando train_model..."
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Verificar que libale_interface.so existe
-check_lib:
-	@echo "Verificando la biblioteca libale.so..."
-	@if [ ! -f libs/Arcade-Learning-Environment-0.6.1/libale_interface.so ]; then \
-		ln -s libs/Arcade-Learning-Environment-0.6.1/libale.so libs/Arcade-Learning-Environment-0.6.1/libale_interface.so; \
-	fi
-
-# Limpiar compilaciones previas
 clean:
-	@echo "Limpiando archivos compilados..."
-	rm -rf $(BUILD_DIR)/*.o $(OUT)
-	@echo "Limpieza completada."
-
-# Ejecutar el programa
-run: all
-	@echo "Ejecutando el proyecto..."
-	./$(OUT)
-
+	rm -rf $(BUILD_DIR)/*.o $(MAIN_EXEC) $(TRAIN_EXEC)

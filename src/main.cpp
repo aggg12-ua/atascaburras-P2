@@ -3,6 +3,8 @@
 #include <vector>
 #include <fstream>
 #include <cstdlib>
+#include "perceptron.hpp"
+
 
 using namespace std;
 
