@@ -7,7 +7,7 @@ BUILD_DIR = build
 
 # Archivos fuente
 SRC_MAIN = $(SRC_DIR)/main.cpp $(SRC_DIR)/perceptron.cpp
-SRC_TRAIN = $(SRC_DIR)/train.cpp $(SRC_DIR)/perceptron.cpp
+SRC_TRAIN = $(SRC_DIR)/train_model.cpp $(SRC_DIR)/perceptron.cpp
 
 # Archivos objeto
 OBJ_MAIN = $(SRC_MAIN:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
